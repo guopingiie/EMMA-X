@@ -29,8 +29,6 @@ from criterion import EMContrastive
 parser = argparse.ArgumentParser(description='PyTorch EMMA-X Cross-lingual Sentence Representation Learning')
 parser.add_argument('--data', default='data_small/', metavar='DIR',
                     help='path to dataset')
-# parser.add_argument('--lmdb-data', default='data_lmdb/', metavar='DIR',
-#                     help='path to LMDB dataset')
 parser.add_argument('--pretrained-model-path',
                     default='pretrained_model/xlm-roberta-base',
                     metavar='DIR', help='path to pretrained model')
@@ -347,7 +345,6 @@ def train(train_loader, model, criterion, optimizer, epoch, args, scheduler):
     consistency = AverageMeter('CST:', ':.4f')
     progress = ProgressMeter(
         len(train_loader),
-        # [losses, gmm_losses, cont_losses, mlm_losses, gmm_rankes, gmm_top1, cts_rankes, consistency, acc1, acc5, erm, ctl_dist, gmm_pi],
         [losses, cont_losses, ctl_dist, cts_rankes, acc1, acc5, gmm_losses, gmm_rankes, gmm_top1, gmm_pi, consistency,
          mlm_losses, erm],
         prefix="Epoch: [{}]".format(epoch))
@@ -358,14 +355,6 @@ def train(train_loader, model, criterion, optimizer, epoch, args, scheduler):
 
         # end = time.time()
         for i, inputs in enumerate(train_loader):
-            # measure data loading time
-            # data_time.update(time.time() - end)
-
-            # if args.gpu is not None:
-            #     images[0] = images[0].cuda(args.gpu, non_blocking=True)
-            #     images[1] = images[1].cuda(args.gpu, non_blocking=True)
-
-            # # compute output
             is_pair = args.use_parallel_data
             # inpl = True
             # do_gmm = False
